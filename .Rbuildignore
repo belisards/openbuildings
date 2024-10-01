@@ -1,0 +1,11 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.git$
+^\.github$
+^README\.md$
+^renv$
+^renv\.lock$
+^\.Rhistory$
+^\.RData$
+^\.Rprofile$
+^\.DS_Store$

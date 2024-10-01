@@ -1,0 +1,31 @@
+---
+title: "Getting Started with MyPackage"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started with MyPackage}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Introduction
+
+`MyPackage` is designed to help users download and analyze building data from Google Open Buildings and OpenStreetMap. This vignette demonstrates the basic usage of the package functions.
+
+# Installation
+
+```r
+devtools::install_github("belisards/openbuildings")
+
+
+bbox <- c(14.90546335395436, 4.275308778796507, 14.919215493755678, 4.283059290376294)
+
+
+# Load the sf package for spatial data manipulation
+library(sf)
+
+# Filter buildings larger than a certain area
+large_buildings <- google_buildings %>% 
+  dplyr::filter(st_area(geometry) > 100)
+
+# Display the first few rows of large buildings
+print(head(large_buildings))

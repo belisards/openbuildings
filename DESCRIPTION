@@ -1,0 +1,26 @@
+Package: openbuildings
+Type: Package
+Title: Open Buildings Extractor
+Version: 0.1.0
+Author: Adriano Belisario
+Maintainer: Adriano Belisario <abelisario@worldbank.org>
+Description: The package allows users to access building datasets from multiple providers. Currently, it supports 
+    downloading building data from Google Open Buildings, with plans to extend 
+    support for other providers in the future. Users can specify regions 
+    of interest, and the package will handle the download and loading of spatial 
+    data into an easily accessible GeoDataFrame format using 'sf'.
+    The package is designed to be simple to use and highly extensible, 
+    making it a useful tool for researchers, urban planners, and GIS professionals.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Imports:
+    sf,
+    httr,
+    R.utils,
+    s2
+RoxygenNote: 7.3.2
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
