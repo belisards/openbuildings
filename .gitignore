@@ -52,3 +52,4 @@ gob_raw_data/
 data/
 renv/
 renv.lock
+*.geojson
