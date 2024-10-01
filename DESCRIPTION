@@ -20,6 +20,7 @@ Imports:
     sf,
     httr,
     R.utils,
+    rmarkdown,
     s2,
     osmdata,
     dplyr,
@@ -28,3 +29,4 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+RoxygenNote: 7.3.2

@@ -1,7 +1,7 @@
 # OpenStreetMap Functions
 
 #' Download OSM Building Data
-download_osm_buildings <- function(bbox, output_file = "osm_buildings.geojson") {
+download_osm_buildings <- function(bbox, output_file = "data/osm_buildings.geojson") {
   # Validate bbox input
   if (length(bbox) != 4) {
     stop("The bbox parameter must be a numeric vector of length 4 in the format: c(min_lon, min_lat, max_lon, max_lat)")

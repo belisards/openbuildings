@@ -8,8 +8,8 @@ library(dplyr)
 library(tidyverse)
 
 # Source the provider-specific files
-source("google.R")
-source("osm.R")
+source("R/osm.R")
+source("R/google.R")
 
 
 # Main download_buildings function

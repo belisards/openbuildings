@@ -16,8 +16,10 @@ vignette: >
 ```r
 devtools::install_github("belisards/openbuildings")
 
+library(openbuildings)
 
 bbox <- c(14.90546335395436, 4.275308778796507, 14.919215493755678, 4.283059290376294)
+
 
 
 # Load the sf package for spatial data manipulation

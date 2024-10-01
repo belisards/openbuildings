@@ -11,7 +11,7 @@ get_open_buildings_region_code <- function(centroid) {
 }
 
 #' Download Google Open Buildings Data
-download_google_open_buildings <- function(bbox, output_dir = "gob_raw_data/", delete_compressed = TRUE) {
+download_google_open_buildings <- function(bbox, output_dir = "data/", delete_compressed = TRUE) {
   if (!dir.exists(output_dir)) {
     dir.create(output_dir, recursive = TRUE)
   }
@@ -46,6 +46,6 @@ load_all_buildings_data <- function(data_folder) {
   if (length(file_list) == 0) {
     stop("No CSV files found in the specified folder.")
   }
-  all_data <- do.call(rbind, lapply(file_list, read_sf))
+  all_data <- do.call(rbind, lapply(file_list, sf::read_sf))
   return(all_data)
 }
