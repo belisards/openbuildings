@@ -1,4 +1,5 @@
 # OpenStreetMap Functions
+library(magrittr)
 
 #' Download OSM Building Data
 download_osm_buildings <- function(bbox, output_file = "data/osm_buildings.geojson") {

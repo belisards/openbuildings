@@ -33,6 +33,7 @@ download_and_uncompress_buildings_data <- function(region_code, output_dir, dele
   uncompressed_file_path <- file.path(output_dir, sprintf("%s_buildings.csv", region_code))
 
   download.file(url, compressed_file_path, mode = "wb")
+  print("File downloaded. Uncompressing it...")
   R.utils::gunzip(compressed_file_path, destname = uncompressed_file_path, overwrite = TRUE)
 
   if (delete_compressed && file.exists(compressed_file_path)) {

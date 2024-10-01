@@ -21,6 +21,7 @@ Imports:
     httr,
     R.utils,
     rmarkdown,
+    magrittr,
     s2,
     osmdata,
     dplyr,
