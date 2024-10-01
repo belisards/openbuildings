@@ -11,16 +11,20 @@ Description: The package allows users to access building datasets from multiple 
     data into an easily accessible GeoDataFrame format using 'sf'.
     The package is designed to be simple to use and highly extensible, 
     making it a useful tool for researchers, urban planners, and GIS professionals.
-License: What license is it under?
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Depends: 
+    R (>= 4.0)
 Imports:
     sf,
     httr,
     R.utils,
-    s2
-RoxygenNote: 7.3.2
-Suggests: 
+    s2,
+    osmdata,
+    dplyr,
+    tidyverse
+Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
