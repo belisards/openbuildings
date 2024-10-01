@@ -9,7 +9,7 @@ vignette: >
 
 # Introduction
 
-`MyPackage` is designed to help users download and analyze building data from Google Open Buildings and OpenStreetMap. This vignette demonstrates the basic usage of the package functions.
+This package is designed to help users download and analyze building data from Google Open Buildings and OpenStreetMap. This vignette demonstrates the basic usage of the package functions.
 
 # Installation
 
@@ -28,12 +28,4 @@ bing_buildings <- openbuildings::download_buildings(bbox,provider = "bing")
 
 google_buildings <- openbuildings::download_buildings(bbox,provider = "google")
 
-# Load the sf package for spatial data manipulation
-library(sf)
-
-# Filter buildings larger than a certain area
-large_buildings <- google_buildings %>% 
-  dplyr::filter(st_area(geometry) > 100)
-
-# Display the first few rows of large buildings
-print(head(large_buildings))
+```r

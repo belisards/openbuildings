@@ -5,7 +5,8 @@ library(R.utils)
 library(s2)
 library(osmdata)
 library(dplyr)
-library(tidyverse)
+library(dplyr)
+library(magrittr) 
 
 # Source the provider-specific files
 source("R/osm.R")
