@@ -24,7 +24,6 @@ osm_buildings <- openbuildings::download_buildings(bbox,provider = "osm")
 
 bing_buildings <- openbuildings::download_buildings(bbox,provider = "bing")
 
-
 google_buildings <- openbuildings::download_buildings(bbox,provider = "google")
 
 ```r

@@ -13,7 +13,7 @@ Description: The package allows users to access building datasets from multiple 
     making it a useful tool for researchers, urban planners, and GIS professionals.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
+LazyData: false
 Depends: 
     R (>= 4.0)
 Imports:

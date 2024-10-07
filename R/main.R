@@ -8,10 +8,16 @@ library(dplyr)
 library(dplyr)
 library(magrittr) 
 
+#' @importFrom magrittr %>%
+NULL
+
+
 # Source the provider-specific files
 source("R/osm.R")
 source("R/bing.R")
 source("R/google.R")
+
+
 
 # Main download_buildings function
 #' Download Building Data from a Specified Provider

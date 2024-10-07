@@ -37,10 +37,10 @@ download_osm_buildings <- function(bbox, output_file = "data/osm_buildings.geojs
   }
 
   # Create an Overpass API query for buildings within the bounding box
-  osm_query <- opq(bbox = bbox) %>%
-    add_osm_feature(key = "building")
+  osm_query <- osmdata::opq(bbox = bbox) %>%
+    osmdata::add_osm_feature(key = "building")
 
-  osm_data <- osmdata_sf(osm_query)
+  osm_data <- osmdata::osmdata_sf(osm_query)
   building_data <- osm_data$osm_polygons
 
   if (nrow(building_data) == 0) {
