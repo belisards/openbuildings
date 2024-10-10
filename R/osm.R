@@ -51,7 +51,7 @@ download_osm_buildings <- function(bbox, output_file = "data/osm_buildings.geojs
   }
 
   # Save the building data to a GeoJSON file
-  st_write(building_data, output_file, delete_dsn = TRUE)
+  sf::st_write(building_data, output_file, delete_dsn = TRUE)
   message(sprintf("Building data successfully saved to '%s'", output_file))
 
   return(building_data)
