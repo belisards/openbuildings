@@ -30,6 +30,8 @@
 #' @importFrom osmdata opq add_osm_feature osmdata_sf
 #' @importFrom sf st_write
 #' @export
+#' 
+
 download_osm_buildings <- function(bbox, output_file = "data/osm_buildings.geojson") {
   # Validate bbox input
   if (length(bbox) != 4) {
