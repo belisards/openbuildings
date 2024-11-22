@@ -43,20 +43,58 @@ download_google_open_buildings <- function(bbox, output_dir = "data", delete_com
   
   # Skip download if the file already exists in CSV or compressed
   # exist_condition <- 
-  if (!file.exists(file_name) || !file.exists(compressed_file_name)) {
-    url <- sprintf("https://storage.googleapis.com/open-buildings-data/v3/polygons_s2_level_4_gzip/%s_buildings.csv.gz", region_code)
-    
-    # Download file with error handling
-    tryCatch({
-      download.file(url, compressed_file_name, mode = "wb")
-      message("File downloaded.")
+# if (!file.exists(file_name)) {
+#   if (!file.exists(compressed_file_name)) {
+#     url <- sprintf("https://storage.googleapis.com/open-buildings-data/v3/polygons_s2_level_4_gzip/%s_buildings.csv.gz", region_code)
+#     
+#     # Download file with error handling
+#     tryCatch({
+#       download.file(url, compressed_file_name, mode = "wb")
+#       message("File downloaded.")
+#     }, error = function(e) {
+#       stop(sprintf("Failed to download the file: %s", e$message))
+#     })
+#   } else {
+#     message("Compressed file already exists. Skipping download.")
+#   }
+# 
+#   # Stream decompression directly to the destination file
+#   message("gunzip - Uncompressing the file...")
+#   tryCatch({
+#     # R.utils::gunzip(compressed_file_name, destname = file_name, overwrite = TRUE)
+#     system(sprintf("gunzip -c %s > %s", compressed_file_name, file_name))
+#   }, error = function(e) {
+#     stop(sprintf("Failed to uncompress the file: %s", e$message))
+#   })
+#   
+#   if (delete_compressed && file.exists(compressed_file_name)) {
+#     unlink(compressed_file_name)
+#   }
+# } else {
+#   message("File already exists. Skipping download.")
+#   return(file_name)
+  if (!file.exists(file_name)) {
+    if (!file.exists(compressed_file_name)) {
+      url <- sprintf("https://storage.googleapis.com/open-buildings-data/v3/polygons_s2_level_4_gzip/%s_buildings.csv.gz", region_code)
       
-      # Stream decompression directly to the destination file
-      message("gunzip - Uncompressing the file...")
+      # Download file with error handling
+      tryCatch({
+        download.file(url, compressed_file_name, mode = "wb")
+        message("File downloaded.")
+      }, error = function(e) {
+        stop(sprintf("Failed to download the file: %s", e$message))
+      })
+    } else {
+      message("Compressed file already exists. Skipping download.")
+    }
+    
+    # Stream decompression directly to the destination file
+    message("gunzip - Uncompressing the file...")
+    tryCatch({
       # R.utils::gunzip(compressed_file_name, destname = file_name, overwrite = TRUE)
       system(sprintf("gunzip -c %s > %s", compressed_file_name, file_name))
     }, error = function(e) {
-      stop(sprintf("Failed to download or uncompress the file: %s", e$message))
+      stop(sprintf("Failed to uncompress the file: %s", e$message))
     })
     
     if (delete_compressed && file.exists(compressed_file_name)) {
@@ -67,8 +105,8 @@ download_google_open_buildings <- function(bbox, output_dir = "data", delete_com
     return(file_name)
   }
   
-  return(file_name)
 }
+
 
 # 
 # # Load all buildings data from CSV files

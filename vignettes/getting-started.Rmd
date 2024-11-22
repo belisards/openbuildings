@@ -21,10 +21,10 @@ library(openbuildings)
 bbox <- c(14.90546335395436, 4.275308778796507, 14.919215493755678, 4.283059290376294)
 
 # Download the data to data/ folder and save it as a variable
-osm_buildings <- openbuildings::download_buildings(bbox,provider = "osm")
+# osm_buildings <- openbuildings::download_buildings(bbox,provider = "osm")
 
 # Download the data to data/ folder and save it as a variable
-bing_buildings <- openbuildings::download_buildings(bbox,provider = "bing")
+# bing_buildings <- openbuildings::download_buildings(bbox,provider = "bing")
 
 # Download the data to data/ folder and save it as a variable
 google_buildings <- openbuildings::download_buildings(bbox,provider = "google")
