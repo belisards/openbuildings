@@ -1,0 +1,18 @@
+[project]
+name = "openbuildings"
+version = "0.1.0"
+description = "Overture Buildings Explorer - building footprint data for development practitioners"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "duckdb>=1.2.0",
+    "shapely>=2.0.6",
+    "pydantic>=2.0.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "httpx>=0.27.0",
+]
