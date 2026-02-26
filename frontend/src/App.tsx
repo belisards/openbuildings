@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { MapView } from './components/MapView';
 import { AreaSelector } from './components/AreaSelector';
+import { DataSummary } from './components/DataSummary';
 import { useMapState } from './hooks/useMapState';
 import type { BuildingMetadata } from './types';
 import type { PickingInfo } from '@deck.gl/core';
@@ -17,6 +18,22 @@ function App() {
   const onHover = useCallback((info: PickingInfo) => {
     setHoverInfo(info.object ? info : null);
   }, []);
+
+  const handleExport = useCallback(async () => {
+    if (!areaData?.features.length) return;
+    const response = await fetch('/api/export', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ geometry: areaData.features[0].geometry, limit: 50000 }),
+    });
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'overture_buildings.geojson';
+    a.click();
+    URL.revokeObjectURL(url);
+  }, [areaData]);
 
   const handleFetchBuildings = useCallback(async () => {
     if (!areaData?.features.length) return;
@@ -52,6 +69,13 @@ function App() {
         onAreaSelected={setAreaData}
         onFetchBuildings={handleFetchBuildings}
         isLoading={isLoading}
+      />
+
+      <DataSummary
+        metadata={metadata}
+        onExport={handleExport}
+        opacity={opacity}
+        onOpacityChange={setOpacity}
       />
 
       {hoverInfo?.object && (
