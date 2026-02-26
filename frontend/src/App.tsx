@@ -1,26 +1,57 @@
 import { useState, useCallback } from 'react';
 import { MapView } from './components/MapView';
+import { AreaSelector } from './components/AreaSelector';
 import { useMapState } from './hooks/useMapState';
+import type { BuildingMetadata } from './types';
 import type { PickingInfo } from '@deck.gl/core';
 
 function App() {
   const { viewState, setViewState } = useMapState();
-  const [opacity] = useState(0.6);
+  const [opacity, setOpacity] = useState(0.6);
   const [hoverInfo, setHoverInfo] = useState<PickingInfo | null>(null);
+  const [areaData, setAreaData] = useState<GeoJSON.FeatureCollection | null>(null);
+  const [buildingData, setBuildingData] = useState<GeoJSON.FeatureCollection | null>(null);
+  const [metadata, setMetadata] = useState<BuildingMetadata | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onHover = useCallback((info: PickingInfo) => {
     setHoverInfo(info.object ? info : null);
   }, []);
 
+  const handleFetchBuildings = useCallback(async () => {
+    if (!areaData?.features.length) return;
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/buildings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ geometry: areaData.features[0].geometry, limit: 50000 }),
+      });
+      const data = await response.json();
+      setBuildingData(data);
+      setMetadata(data.metadata);
+    } catch (err) {
+      console.error('Failed to fetch buildings:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [areaData]);
+
   return (
     <div style={{ width: '100vw', height: '100vh', position: 'relative' }}>
       <MapView
-        buildingData={null}
-        areaData={null}
+        buildingData={buildingData}
+        areaData={areaData}
         opacity={opacity}
         viewState={viewState}
         onViewStateChange={setViewState}
         onHover={onHover}
+      />
+
+      <AreaSelector
+        onAreaSelected={setAreaData}
+        onFetchBuildings={handleFetchBuildings}
+        isLoading={isLoading}
       />
 
       {hoverInfo?.object && (
