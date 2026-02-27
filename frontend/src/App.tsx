@@ -99,7 +99,7 @@ function App() {
 
       {!dataReady && (
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/80 text-white px-4 py-2 rounded-lg text-sm z-20">
-          Loading Overture data index... (first startup takes ~2-3 min)
+          Data index not found. Run: uv run python -m backend.scripts.build_index
         </div>
       )}
 

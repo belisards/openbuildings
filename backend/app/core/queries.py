@@ -2,16 +2,34 @@ import json
 from typing import Any
 
 from shapely.geometry import shape
-from backend.app.core.config import OVERTURE_S3_PATH, DEFAULT_FEATURE_LIMIT
+from backend.app.core.config import OVERTURE_S3_PATH, DEFAULT_FEATURE_LIMIT, INDEX_PATH
 from backend.app.core.duckdb import get_connection
+
+
+def _get_matching_files(con, bounds: tuple[float, float, float, float]) -> list[str]:
+    """Use the local file index to find only the parquet files whose bbox overlaps the query area."""
+    minx, miny, maxx, maxy = bounds
+    rows = con.execute(f"""
+        SELECT file_name FROM '{INDEX_PATH}'
+        WHERE xmax >= $1 AND xmin <= $2
+          AND ymax >= $3 AND ymin <= $4
+    """, [minx, maxx, miny, maxy]).fetchall()
+    return [r[0] for r in rows]
 
 
 def query_buildings(geometry: dict[str, Any], limit: int = DEFAULT_FEATURE_LIMIT) -> dict[str, Any]:
     geom = shape(geometry)
-    bounds = geom.bounds
+    bounds = geom.bounds  # (minx, miny, maxx, maxy)
     geom_wkt = geom.wkt
-
     con = get_connection()
+
+    if INDEX_PATH.exists():
+        files = _get_matching_files(con, bounds)
+        if not files:
+            return {"type": "FeatureCollection", "features": []}
+        source = f"read_parquet({files})"
+    else:
+        source = f"read_parquet('{OVERTURE_S3_PATH}')"
 
     sql = f"""
     SELECT
@@ -28,7 +46,7 @@ def query_buildings(geometry: dict[str, Any], limit: int = DEFAULT_FEATURE_LIMIT
         roof_shape,
         roof_color,
         JSON(sources) AS sources
-    FROM read_parquet('{OVERTURE_S3_PATH}')
+    FROM {source}
     WHERE
         bbox.xmin >= $1 AND bbox.xmax <= $2
         AND bbox.ymin >= $3 AND bbox.ymax <= $4
