@@ -65,18 +65,40 @@ export function AreaSelector({ onAreaSelected, onFetchBuildings, isLoading }: Ar
       </button>
 
       {featureNames.length > 0 && (
-        <div className="mb-3 max-h-40 overflow-y-auto">
-          {featureNames.map(name => (
-            <label key={name} className="flex items-center gap-2 py-1 text-sm text-gray-700 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={selectedNames.includes(name)}
-                onChange={() => handleSelectionChange(name)}
-              />
-              {name}
-            </label>
-          ))}
-        </div>
+        <>
+          <div className="flex gap-2 mb-2">
+            <button
+              onClick={() => {
+                setSelectedNames(featureNames);
+                onAreaSelected({ type: 'FeatureCollection', features });
+              }}
+              className="flex-1 px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded text-xs text-gray-600 transition"
+            >
+              All
+            </button>
+            <button
+              onClick={() => {
+                setSelectedNames([]);
+                onAreaSelected({ type: 'FeatureCollection', features: [] });
+              }}
+              className="flex-1 px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded text-xs text-gray-600 transition"
+            >
+              None
+            </button>
+          </div>
+          <div className="mb-3 max-h-40 overflow-y-auto">
+            {featureNames.map(name => (
+              <label key={name} className="flex items-center gap-2 py-1 text-sm text-gray-700 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={selectedNames.includes(name)}
+                  onChange={() => handleSelectionChange(name)}
+                />
+                {name}
+              </label>
+            ))}
+          </div>
+        </>
       )}
 
       {features.length > 0 && (

@@ -1,7 +1,8 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { MapView } from './components/MapView';
 import { AreaSelector } from './components/AreaSelector';
 import { DataSummary } from './components/DataSummary';
+import { MiniGlobe } from './components/MiniGlobe';
 import { useMapState } from './hooks/useMapState';
 import type { BuildingMetadata } from './types';
 import type { PickingInfo } from '@deck.gl/core';
@@ -14,6 +15,22 @@ function App() {
   const [buildingData, setBuildingData] = useState<GeoJSON.FeatureCollection | null>(null);
   const [metadata, setMetadata] = useState<BuildingMetadata | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [dataReady, setDataReady] = useState(false);
+
+  useEffect(() => {
+    const check = async () => {
+      try {
+        const res = await fetch('/api/health');
+        const data = await res.json();
+        if (data.data_ready) {
+          setDataReady(true);
+          return;
+        }
+      } catch {}
+      setTimeout(check, 5000);
+    };
+    check();
+  }, []);
 
   const onHover = useCallback((info: PickingInfo) => {
     setHoverInfo(info.object ? info : null);
@@ -77,6 +94,14 @@ function App() {
         opacity={opacity}
         onOpacityChange={setOpacity}
       />
+
+      <MiniGlobe longitude={viewState.longitude} latitude={viewState.latitude} />
+
+      {!dataReady && (
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/80 text-white px-4 py-2 rounded-lg text-sm z-20">
+          Loading Overture data index... (first startup takes ~2-3 min)
+        </div>
+      )}
 
       {hoverInfo?.object && (
         <div style={{

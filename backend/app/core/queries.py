@@ -16,7 +16,7 @@ def query_buildings(geometry: dict[str, Any], limit: int = DEFAULT_FEATURE_LIMIT
     sql = f"""
     SELECT
         id,
-        ST_AsGeoJSON(ST_GeomFromWKB(geometry)) AS geojson_geom,
+        ST_AsGeoJSON(geometry) AS geojson_geom,
         height,
         num_floors,
         class,
@@ -28,11 +28,11 @@ def query_buildings(geometry: dict[str, Any], limit: int = DEFAULT_FEATURE_LIMIT
         roof_shape,
         roof_color,
         JSON(sources) AS sources
-    FROM read_parquet('{OVERTURE_S3_PATH}', filename=true, hive_partitioning=1)
+    FROM read_parquet('{OVERTURE_S3_PATH}')
     WHERE
         bbox.xmin >= $1 AND bbox.xmax <= $2
         AND bbox.ymin >= $3 AND bbox.ymax <= $4
-        AND ST_Intersects(ST_GeomFromWKB(geometry), ST_GeomFromText($5))
+        AND ST_Intersects(geometry, ST_GeomFromText($5))
     LIMIT $6
     """
 
